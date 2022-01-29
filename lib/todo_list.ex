@@ -14,7 +14,7 @@ defmodule TodoList do
       %{}
 
   """
-  def new(), do: %{}
+  def new(), do: MultiDic.new()
 
   @spec add_entry(%{}, Date, String) :: any
   @doc """
@@ -27,12 +27,7 @@ defmodule TodoList do
 
   """
   def add_entry(todo_list, data, title) do
-    Map.update(
-      todo_list,
-      data,
-      [title],
-      fn titles -> [title | titles] end
-    )
+    MultiDic.add(todo_list, data, title)
   end
 
   @spec entries(map, Date) :: any
@@ -48,5 +43,5 @@ defmodule TodoList do
       nil
 
   """
-  def entries(todo_list, data), do: Map.get(todo_list, data)
+  def entries(todo_list, data), do: MultiDic.get(todo_list, data)
 end
