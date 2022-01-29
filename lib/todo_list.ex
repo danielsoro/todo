@@ -30,16 +30,16 @@ defmodule TodoList do
     MultiDic.add(todo_list, entry.date, entry)
   end
 
-  @spec entries(map, Date) :: any
+  @spec entries(map, Date) :: map()
   @doc """
   Function to get entries by date
 
   ## Examples
 
-      iex> TodoList.entries(%{~D[2022-01-29] => ["Appoitment"]}, ~D[2022-01-29])
-      ["Appoitment"]
+      iex> TodoList.entries(%{~D[2022-01-29] => [%{date: ~D[2022-01-29], title: "Appoitment"}, %{date: ~D[2022-01-29], title: "Meeting"}]}, ~D[2022-01-29])
+      [%{date: ~D[2022-01-29], title: "Appoitment"}, %{date: ~D[2022-01-29], title: "Meeting"}]
 
-      iex> TodoList.entries(%{~D[2022-01-29] => ["Appoitment"]}, ~D[2022-01-30])
+      iex> TodoList.entries(%{~D[2022-01-29] => [%{date: ~D[2022-01-29], title: "Appoitment"}]}, ~D[2022-01-30])
       nil
 
   """
