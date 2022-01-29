@@ -15,4 +15,22 @@ defmodule TodoList do
 
   """
   def new(), do: %{}
+
+  @spec add_entry(%{}, Date, String) :: any
+  @doc """
+  Function to add new entry to your todo list.
+
+  ## Examples
+      iex> TodoList.add_entry(%{}, ~D[2022-01-29], "Appoitment")
+      %{~D[2022-01-29] => ["Appoitment"]}
+
+  """
+  def add_entry(todo_list, data, title) do
+    Map.update(
+      todo_list,
+      data,
+      [title],
+      fn titles -> [title | titles] end
+    )
+  end
 end
