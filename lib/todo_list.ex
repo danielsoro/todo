@@ -1,5 +1,6 @@
 defmodule TodoList do
   defstruct auto_id: 1, entries: %{}
+
   @moduledoc """
   Documentation for `TodoList`.
   This module define a TodoList when you can configure a list of todo by dates
@@ -17,7 +18,10 @@ defmodule TodoList do
   """
   def new(), do: %TodoList{}
 
-  @spec add_entry(%TodoList{auto_id: number, entries: map}, map) :: %TodoList{auto_id: number, entries: map}
+  @spec add_entry(%TodoList{auto_id: number, entries: map}, map) :: %TodoList{
+          auto_id: number,
+          entries: map
+        }
   @doc """
   Function to add new entry to your todo list.
 
@@ -32,10 +36,7 @@ defmodule TodoList do
 
     new_entries = Map.put(todo_list.entries, todo_list.auto_id, entry)
 
-    %TodoList{todo_list |
-    entries: new_entries,
-    auto_id: todo_list.auto_id + 1
-  }
+    %TodoList{todo_list | entries: new_entries, auto_id: todo_list.auto_id + 1}
   end
 
   @spec entries(%TodoList{auto_id: number, entries: map}, Date) :: [map()]
