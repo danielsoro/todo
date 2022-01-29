@@ -16,18 +16,18 @@ defmodule TodoList do
   """
   def new(), do: MultiDic.new()
 
-  @spec add_entry(%{}, Date, String) :: any
+  @spec add_entry(map, %{date: Date, title: String}) :: map
   @doc """
   Function to add new entry to your todo list.
 
   ## Examples
 
-      iex> TodoList.add_entry(%{}, ~D[2022-01-29], "Appoitment")
-      %{~D[2022-01-29] => ["Appoitment"]}
+      iex> TodoList.add_entry(%{}, %{date: ~D[2022-01-29], title: "Appoitment"})
+      %{~D[2022-01-29] => [%{date: ~D[2022-01-29], title: "Appoitment"}]}
 
   """
-  def add_entry(todo_list, data, title) do
-    MultiDic.add(todo_list, data, title)
+  def add_entry(todo_list, entry) do
+    MultiDic.add(todo_list, entry.date, entry)
   end
 
   @spec entries(map, Date) :: any
