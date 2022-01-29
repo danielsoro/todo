@@ -16,7 +16,7 @@ defmodule TodoList do
   """
   def new(), do: MultiDic.new()
 
-  @spec add_entry(map, %{date: Date, title: String}) :: map
+  @spec add_entry(map, %{date: Date, title: String}) :: %{Date => [%{date: Date, title: String}]}
   @doc """
   Function to add new entry to your todo list.
 
@@ -30,7 +30,7 @@ defmodule TodoList do
     MultiDic.add(todo_list, entry.date, entry)
   end
 
-  @spec entries(map, Date) :: map()
+  @spec entries(map, Date) :: %{Date => %{date: Date, title: String}}
   @doc """
   Function to get entries by date
 
