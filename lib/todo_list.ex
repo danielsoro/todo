@@ -88,6 +88,32 @@ defmodule TodoList do
     end
   end
 
+  @spec delete_entry(%TodoList{auto_id: number, entries: map}, number) :: %TodoList{
+          auto_id: number,
+          entries: map
+        }
+  @doc """
+  This function will remove a entry from the entries list
+
+  ## Example
+
+      iex> TodoList.delete_entry(%TodoList{auto_id: 2, entries: %{1 => %{id: 1, date: ~D[2022-01-29], title: "Appoitment"}}}, 1)
+      %TodoList{auto_id: 2, entries: %{}}
+
+      iex> TodoList.delete_entry(%TodoList{auto_id: 2, entries: %{1 => %{id: 1, date: ~D[2022-01-29], title: "Appoitment"}}}, 10)
+      %TodoList{auto_id: 2, entries: %{1 => %{id: 1, date: ~D[2022-01-29], title: "Appoitment"}}}
+
+  """
+  def delete_entry(todo_list, entry_id) do
+    case Map.fetch(todo_list.entries, entry_id) do
+      :error ->
+        todo_list
+
+      {:ok, old_entry} ->
+        %TodoList{todo_list | entries: Map.delete(todo_list.entries, old_entry.id)}
+    end
+  end
+
   @spec entries(%TodoList{auto_id: number, entries: map}, Date) :: [map()]
   @doc """
   Function to get entries by date
