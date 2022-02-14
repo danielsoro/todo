@@ -15,8 +15,10 @@ defmodule TodoList do
       iex> TodoList.new()
       %TodoList{auto_id: 1, entries: %{}}
 
+      iex> TodoList.new([%{date: ~D[2022-01-29], title: "Appoitment"}])
+      %TodoList{auto_id: 2, entries: %{1 => %{id: 1, date: ~D[2022-01-29], title: "Appoitment"}}}
   """
-  def new(), do: %TodoList{}
+  def new(entries \\ []), do: Enum.reduce(entries, %TodoList{}, &add_entry(&2, &1))
 
   @spec add_entry(%TodoList{auto_id: number, entries: map}, map) :: %TodoList{
           auto_id: number,
