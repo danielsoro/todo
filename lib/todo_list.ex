@@ -142,17 +142,18 @@ defmodule TodoList.CvsImporter do
     File.stream!(file)
     |> Stream.map(&String.replace(&1, "\n", ""))
     |> Stream.map(&String.split(&1, ","))
-    |> Stream.map(&convert(&1))
+    |> Stream.map(&create_entry(&1))
     |> Enum.to_list()
     |> TodoList.new()
   end
 
-  defp convert(list) do
+  defp create_entry(list) do
     [year, month, day] =
       Enum.at(list, 0)
       |> String.split("/")
+      |> Enum.map(&String.to_integer/1)
 
-    date = Date.new!(String.to_integer(year), String.to_integer(month), String.to_integer(day))
+    date = Date.new!(year, month, day)
     %{date: date, title: Enum.at(list, 1)}
   end
 end
