@@ -138,22 +138,45 @@ end
 
 defmodule TodoList.CvsImporter do
   @spec import(any) :: nil
-  def import(file) do
-    File.stream!(file)
-    |> Stream.map(&String.replace(&1, "\n", ""))
-    |> Stream.map(&String.split(&1, ","))
-    |> Stream.map(&create_entry(&1))
-    |> Enum.to_list()
+  def import(file_name) do
+    file_name
+    |> read_lines
+    |> create_entries
     |> TodoList.new()
   end
 
-  defp create_entry(list) do
+  defp read_lines(file_name) do
+    File.stream!(file_name)
+    |> Stream.map(&String.replace(&1, "\n", ""))
+  end
+
+  defp create_entries(lines) do
+    lines
+    |> Stream.map(&extract_fields/1)
+    |> Stream.map(&create_entry/1)
+  end
+
+  defp extract_fields(line) do
+    line
+    |> String.split(",")
+    |> convert_date
+  end
+
+  defp convert_date([date_string, title]) do
+    {parse_date(date_string), title}
+  end
+
+  defp parse_date(date_string) do
     [year, month, day] =
-      Enum.at(list, 0)
+      date_string
       |> String.split("/")
       |> Enum.map(&String.to_integer/1)
 
-    date = Date.new!(year, month, day)
-    %{date: date, title: Enum.at(list, 1)}
+    {:ok, date} = Date.new(year, month, day)
+    date
+  end
+
+  defp create_entry({date, title}) do
+    %{date: date, title: title}
   end
 end
