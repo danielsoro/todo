@@ -135,3 +135,24 @@ defmodule TodoList do
     |> Enum.map(fn {_, entry} -> entry end)
   end
 end
+
+defmodule TodoList.CvsImporter do
+  @spec import(any) :: nil
+  def import(file) do
+    File.stream!(file)
+    |> Stream.map(&String.replace(&1, "\n", ""))
+    |> Stream.map(&String.split(&1, ","))
+    |> Stream.map(&convert(&1))
+    |> Enum.to_list()
+    |> TodoList.new()
+  end
+
+  defp convert(list) do
+    [year, month, day] =
+      Enum.at(list, 0)
+      |> String.split("/")
+
+    date = Date.new!(String.to_integer(year), String.to_integer(month), String.to_integer(day))
+    %{date: date, title: Enum.at(list, 1)}
+  end
+end
